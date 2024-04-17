@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { Question } from '../../../db/data';
 import question from '../../../db/data';
 
@@ -18,6 +18,9 @@ export const questionsSlice = createSlice({
     reducers: {
         increment: (state) => {
             ++state.currentStep
+        },
+        setAnswer: (state, action: PayloadAction<{ ans: string | string[], currentStep: number }>) => {
+            state.data[action.payload.currentStep].answer = action.payload.ans
         }
     },
 });
