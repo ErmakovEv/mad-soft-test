@@ -26,6 +26,7 @@ function App() {
     const val = localStorage.getItem("timer");
     if (val !== null) {
       setTimer(parseInt(val));
+      setStart(true);
     }
   }, []);
 
