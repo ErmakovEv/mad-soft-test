@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  font-family: "Arial";
+  font-family: 'Arial';
   font-style: normal;
   font-size: 16px;
   line-height: 1.2;
@@ -65,7 +65,7 @@ body {
 }
 
 .progress-bar_item.check {
-  background-color: rgb(37, 37, 37);
+  background-color: #252525;
 }
 
 .progress-bar_item.current {
@@ -77,5 +77,15 @@ body {
 }
 
 .test-answer {
+  height: 150px;
   margin-bottom: 10px;
+}
+
+.test-question {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.test-answer_checkbox {
+  font-size: 26px;
 }

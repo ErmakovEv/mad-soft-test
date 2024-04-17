@@ -1,15 +1,19 @@
-import { useAppSelector } from "../1. App/storeProvider/hooks/redux";
-import { Cards } from "../db/data";
-import CardCheckbox from "./CardCheckbox";
-import CardInput from "./CardInput";
-import CardRadio from "./CardRadio";
-import CardTextarea from "./CardTextarea";
+import { useAppSelector, useAppDispatch } from '../1. App/storeProvider/hooks/redux';
+import { Cards } from '../db/data';
+import CardCheckbox from './CardCheckbox';
+import CardInput from './CardInput';
+import CardRadio from './CardRadio';
+import CardTextarea from './CardTextarea';
+import { appSlice } from '../1. App/storeProvider/reducers/appSlice';
+import { TestStatus } from '../1. App/storeProvider/reducers/appSlice';
 
 function CardContainer() {
   const { data, currentStep } = useAppSelector((state) => state.questionsSlice);
+  const dispatch = useAppDispatch();
+  const { runTestToggle } = appSlice.actions;
 
   const getCard = () => {
-    if (currentStep === data.length) return <>КОНЕЦ!!!</>;
+    if (currentStep === data.length) dispatch(runTestToggle(TestStatus.STOP));
     const currentQuestion = data[currentStep];
     switch (currentQuestion.type) {
       case Cards.CHECKBOX:

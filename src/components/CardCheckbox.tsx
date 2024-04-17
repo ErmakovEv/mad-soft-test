@@ -1,35 +1,41 @@
-import { Button, FormGroup, FormControlLabel, Checkbox } from "@mui/material";
-import { Question } from "../db/data";
-import { questionsSlice } from "../1. App/storeProvider/reducers/questionsSlice";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../1. App/storeProvider/hooks/redux";
-import { useState } from "react";
+import { Button, FormGroup, FormControlLabel, Checkbox, Typography } from '@mui/material';
+import { Question } from '../db/data';
+import { questionsSlice } from '../1. App/storeProvider/reducers/questionsSlice';
+import { useAppDispatch, useAppSelector } from '../1. App/storeProvider/hooks/redux';
+import { useState } from 'react';
 
 const CardCheckbox = ({ question }: { question: Question }) => {
   const [checkedItems, setCheckedItems] = useState(() =>
     question.options
-      ? question.options.reduce(
-          (acc: { [key: string]: boolean }, curr: string) => {
-            acc[curr] = false;
-            return acc;
-          },
-          {}
-        )
+      ? question.options.reduce((acc: { [key: string]: boolean }, curr: string) => {
+          acc[curr] = false;
+          return acc;
+        }, {})
       : {}
   );
   const dispatch = useAppDispatch();
   const { increment, setAnswer } = questionsSlice.actions;
-  const currentStep = useAppSelector(
-    (state) => state.questionsSlice.currentStep
-  );
+  const currentStep = useAppSelector((state) => state.questionsSlice.currentStep);
 
   const handleCheckboxChange = (itemName: string) => {
     setCheckedItems((prevState) => ({
       ...prevState,
       [itemName]: !prevState[itemName],
     }));
+  };
+
+  const buttonHandler = () => {
+    const ans = Object.entries(checkedItems)
+      .filter(([, value]) => value === true)
+      .map(([key]) => key);
+    dispatch(increment());
+    dispatch(
+      setAnswer({
+        ans,
+        currentStep,
+      })
+    );
+    localStorage.setItem('step', `${currentStep + 1}`);
   };
 
   return (
@@ -41,38 +47,37 @@ const CardCheckbox = ({ question }: { question: Question }) => {
             ? question.options.map((item, index) => (
                 <FormControlLabel
                   key={index}
+                  className="test-answer_checkbox"
+                  sx={{ fontSize: 10 }}
                   control={
                     <Checkbox
                       checked={checkedItems[item]}
                       onChange={() => handleCheckboxChange(item)}
+                      sx={{
+                        '& .MuiSvgIcon-root': { fontSize: 16 },
+                        color: '#252525',
+                        '&.Mui-checked': {
+                          color: '#d92424',
+                        },
+                      }}
                     />
                   }
-                  label={item}
+                  label={<Typography variant="subtitle2">{item}</Typography>}
                 />
               ))
             : null}
         </FormGroup>
       </div>
       <Button
-        onClick={() => {
-          const ans = Object.entries(checkedItems)
-            .filter(([, value]) => value === true)
-            .map(([key]) => key);
-          dispatch(increment());
-          dispatch(
-            setAnswer({
-              ans,
-              currentStep,
-            })
-          );
-        }}
+        onClick={buttonHandler}
         variant="contained"
         sx={{
-          background: "#d92424",
-          "&:hover": {
-            background: "#ff0000",
+          background: '#d92424',
+          '&:hover': {
+            background: '#ff0000',
           },
-        }}>
+        }}
+      >
         Ответить
       </Button>
     </div>
