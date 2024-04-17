@@ -1,11 +1,11 @@
-const enum Cards {
+export const enum Cards {
   RADIO,
   CHECKBOX,
   INPUT,
   TEXTAREA,
 }
 
-interface Question {
+export interface Question {
   id: number;
   type: Cards;
   question: string;
@@ -14,7 +14,7 @@ interface Question {
 
 const question: Question[] = [
   {
-    id: 1,
+    id: 0,
     type: Cards.CHECKBOX,
     question: 'Что такое JavaScript?',
     options: [
@@ -27,7 +27,7 @@ const question: Question[] = [
   {
     id: 1,
     type: Cards.RADIO,
-    question: 'Лушчий кандидат на вакансию',
+    question: 'Лучший кандидат на вакансию',
     options: ['Вася Пупкин', 'Иванов Олег', 'Евгений Ермаков', 'Den Abramov'],
   },
   {

@@ -1,8 +1,10 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import timerSlice from './reducers/timerSlice';
+import questionsSlice from './reducers/questionsSlice';
 
 const rootReducer = combineReducers({
   timerSlice,
+  questionsSlice
 
 });
 
