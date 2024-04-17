@@ -14,7 +14,12 @@ const CardRadio = ({ question }: { question: Question }) => {
       <Button
         onClick={() => dispatch(increment())}
         variant="contained"
-        sx={{ background: "#d92424" }}>
+        sx={{
+          background: "#d92424",
+          "&:hover": {
+            background: "#ff0000",
+          },
+        }}>
         Ответить
       </Button>
     </div>

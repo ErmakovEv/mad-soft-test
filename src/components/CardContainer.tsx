@@ -7,7 +7,6 @@ import CardTextarea from "./CardTextarea";
 
 function CardContainer() {
   const { data, currentStep } = useAppSelector((state) => state.questionsSlice);
-  console.log("!!!");
 
   const getCard = () => {
     if (currentStep === data.length) return <>КОНЕЦ!!!</>;
@@ -26,7 +25,7 @@ function CardContainer() {
     }
   };
 
-  return <div>{getCard()}</div>;
+  return <div className="card-container">{getCard()}</div>;
 }
 
 export default CardContainer;
