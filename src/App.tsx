@@ -36,8 +36,6 @@ function App() {
     dispatch(setTimer(TIME));
   };
 
-  const formatTime = (seconds: number) => {};
-
   const getNode = () => {
     switch (testStatus) {
       case TestStatus.START:
