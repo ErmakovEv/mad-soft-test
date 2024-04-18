@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Question } from '../../../db/data';
-import question from '../../../db/data';
+import { Question } from '../../db/data';
+import question from '../../db/data';
 
 interface QuestionsState {
   data: Question[];

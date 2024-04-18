@@ -1,4 +1,4 @@
-import { useAppSelector } from "../1. App/storeProvider/hooks/redux";
+import { useAppSelector } from "../store/hooks/redux";
 
 const ProgressBar = () => {
   const { data, currentStep } = useAppSelector((state) => state.questionsSlice);

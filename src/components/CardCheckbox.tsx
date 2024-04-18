@@ -1,21 +1,32 @@
-import { Button, FormGroup, FormControlLabel, Checkbox, Typography } from '@mui/material';
-import { Question } from '../db/data';
-import { questionsSlice } from '../1. App/storeProvider/reducers/questionsSlice';
-import { useAppDispatch, useAppSelector } from '../1. App/storeProvider/hooks/redux';
-import { useState } from 'react';
+import {
+  Button,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  Typography,
+} from "@mui/material";
+import { Question } from "../db/data";
+import { questionsSlice } from "../store/reducers/questionsSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks/redux";
+import { useState } from "react";
 
 const CardCheckbox = ({ question }: { question: Question }) => {
   const [checkedItems, setCheckedItems] = useState(() =>
     question.options
-      ? question.options.reduce((acc: { [key: string]: boolean }, curr: string) => {
-          acc[curr] = false;
-          return acc;
-        }, {})
+      ? question.options.reduce(
+          (acc: { [key: string]: boolean }, curr: string) => {
+            acc[curr] = false;
+            return acc;
+          },
+          {}
+        )
       : {}
   );
   const dispatch = useAppDispatch();
   const { increment, setAnswer } = questionsSlice.actions;
-  const currentStep = useAppSelector((state) => state.questionsSlice.currentStep);
+  const currentStep = useAppSelector(
+    (state) => state.questionsSlice.currentStep
+  );
 
   const handleCheckboxChange = (itemName: string) => {
     setCheckedItems((prevState) => ({
@@ -35,7 +46,7 @@ const CardCheckbox = ({ question }: { question: Question }) => {
         currentStep,
       })
     );
-    localStorage.setItem('step', `${currentStep + 1}`);
+    localStorage.setItem("step", `${currentStep + 1}`);
   };
 
   return (
@@ -54,10 +65,10 @@ const CardCheckbox = ({ question }: { question: Question }) => {
                       checked={checkedItems[item]}
                       onChange={() => handleCheckboxChange(item)}
                       sx={{
-                        '& .MuiSvgIcon-root': { fontSize: 16 },
-                        color: '#252525',
-                        '&.Mui-checked': {
-                          color: '#d92424',
+                        "& .MuiSvgIcon-root": { fontSize: 16 },
+                        color: "#252525",
+                        "&.Mui-checked": {
+                          color: "#d92424",
                         },
                       }}
                     />
@@ -72,12 +83,11 @@ const CardCheckbox = ({ question }: { question: Question }) => {
         onClick={buttonHandler}
         variant="contained"
         sx={{
-          background: '#d92424',
-          '&:hover': {
-            background: '#ff0000',
+          background: "#d92424",
+          "&:hover": {
+            background: "#ff0000",
           },
-        }}
-      >
+        }}>
         Ответить
       </Button>
     </div>

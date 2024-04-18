@@ -1,35 +1,42 @@
-import { useEffect } from 'react';
-import { Button } from '@mui/material';
-import CardContainer from './components/CardContainer';
-import ProgressBar from './components/ProgressBar';
-import { appSlice, TestStatus } from './1. App/storeProvider/reducers/appSlice';
-import { useAppDispatch, useAppSelector } from './1. App/storeProvider/hooks/redux';
+import { useEffect } from "react";
+import { Button } from "@mui/material";
+import CardContainer from "./components/CardContainer";
+import ProgressBar from "./components/ProgressBar";
+import { appSlice, TestStatus } from "./store/reducers/appSlice";
+import { useAppDispatch, useAppSelector } from "./store/hooks/redux";
+import Header from "./components/Header";
 
-const TIME = 1500;
+const TIME = 15;
 
 function App() {
   const { testStatus, timer } = useAppSelector((state) => state.appSlice);
   const { decrementTimer, runTestToggle, setTimer } = appSlice.actions;
   const dispatch = useAppDispatch();
+  const { data, currentStep } = useAppSelector((state) => state.questionsSlice);
 
   useEffect(() => {
-    const intervalId = setTimeout(() => {
-      if (timer > 0 && testStatus === TestStatus.RUN) {
-        dispatch(decrementTimer());
-        localStorage.setItem('timer', `${timer - 1}`);
-      }
-    }, 1000);
-
-    return () => clearTimeout(intervalId);
-  }, [decrementTimer, dispatch, testStatus, timer]);
-
-  useEffect(() => {
-    const val = localStorage.getItem('timer');
-    if (val !== null) {
-      dispatch(setTimer(parseInt(val)));
+    let intervalId: number;
+    if (timer > 0 && currentStep < data.length) {
       dispatch(runTestToggle(TestStatus.RUN));
+      intervalId = setTimeout(() => {
+        dispatch(decrementTimer());
+        localStorage.setItem("timer", `${timer - 1}`);
+      }, 1000);
+    } else if (localStorage.getItem("timer") === null) {
+      dispatch(runTestToggle(TestStatus.START));
+    } else {
+      dispatch(runTestToggle(TestStatus.STOP));
     }
-  }, [dispatch, runTestToggle, setTimer]);
+    return () => clearTimeout(intervalId);
+  }, [
+    currentStep,
+    data.length,
+    decrementTimer,
+    dispatch,
+    runTestToggle,
+    testStatus,
+    timer,
+  ]);
 
   const buttonStartHandler = () => {
     dispatch(runTestToggle(TestStatus.RUN));
@@ -44,12 +51,11 @@ function App() {
             onClick={buttonStartHandler}
             variant="contained"
             sx={{
-              background: '#d92424',
-              '&:hover': {
-                background: '#ff0000',
+              background: "#d92424",
+              "&:hover": {
+                background: "#ff0000",
               },
-            }}
-          >
+            }}>
             Начать тест
           </Button>
         );
@@ -72,12 +78,11 @@ function App() {
       const minutes = Math.floor(timer / 60);
       const remainingSeconds = timer % 60;
 
-      const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
-      const formattedSeconds = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+      const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+      const formattedSeconds =
+        remainingSeconds < 10 ? "0" + remainingSeconds : remainingSeconds;
 
       return `${formattedMinutes} : ${formattedSeconds}`;
-    } else {
-      dispatch(runTestToggle(TestStatus.STOP));
     }
   };
 
@@ -85,8 +90,10 @@ function App() {
     <div className="App">
       <div className="wrapper">
         <div className="main-header">
-          <div className="main-header__name">Тестирование</div>
-          {testStatus === TestStatus.RUN ? <div className="main-header__clock">{timerHandler()}</div> : null}
+          <Header />
+          {testStatus === TestStatus.RUN ? (
+            <div className="main-header__clock">{timerHandler()}</div>
+          ) : null}
         </div>
         <div className="main-body">{getNode()}</div>
       </div>

@@ -13,6 +13,7 @@ interface AppState {
 
 const initialState: AppState = {
   timer: parseInt(localStorage.getItem('timer') ?? '0'),
+  // timer: 0,
   testStatus: TestStatus.START,
 };
 
