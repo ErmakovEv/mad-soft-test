@@ -67,7 +67,14 @@ function App() {
           </div>
         );
       case TestStatus.STOP:
-        return <div className="main-header__name">завершено!</div>;
+        return (
+          <div className="main-header__name">
+            завершено!
+            <div className="main-header__note">
+              Для перезапуска теста удалите данные из LocalStorage
+            </div>
+          </div>
+        );
       default:
         return <>Error!</>;
     }
